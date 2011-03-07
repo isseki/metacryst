@@ -713,7 +713,7 @@ static BOOL create_window(ckOpt& opt)
 
 	conf_title = opt.getTitle();
 	if(!conf_title || !conf_title[0]){
-          title = L"ckw";
+          title = L"metacryst";
         }else{
           title = new wchar_t[ strlen(conf_title)+1 ];
           ZeroMemory(title, sizeof(wchar_t) * (strlen(conf_title)+1));
@@ -886,6 +886,8 @@ static BOOL create_font(const char* name, int height)
 #ifdef _MSC_VER
 #include <winternl.h>
 #endif
+#define STARTF_TITLEISLINKNAME 0x00000800
+#include "winternl_mod.h"
 
 /*----------*/
 static void __hide_alloc_console()
@@ -919,7 +921,7 @@ static void __hide_alloc_console()
 #else
 	// for gcc
 	INT_PTR peb = *(INT_PTR*)((INT_PTR)NtCurrentTeb() + 0x30);
-    PRTL_USER_PROCESS_PARAMETERS param = *(PRTL_USER_PROCESS_PARAMETERS*)(peb + 0x10);
+	PRTL_USER_PROCESS_PARAMETERS param = *(PRTL_USER_PROCESS_PARAMETERS*)(peb + 0x10);
 	DWORD* pflags = (DWORD*)&(param->dwFlags);
 	WORD* pshow = (WORD*)&(param->wShowWindow); 
 #endif // _MSC_VER
@@ -976,7 +978,7 @@ static BOOL create_console(ckOpt& opt)
 
 	conf_title = opt.getTitle();
 	if(!conf_title || !conf_title[0]){
-		title = L"ckw";
+		title = L"metacryst";
 	}else{
 		title = new wchar_t[ strlen(conf_title)+1 ];
 		ZeroMemory(title, sizeof(wchar_t) * (strlen(conf_title)+1));
@@ -1183,7 +1185,8 @@ static void _terminate()
 #endif
 
 /*----------*/
-int APIENTRY wWinMain(HINSTANCE hInst, HINSTANCE hPrev, LPWSTR lpCmdLine, int nCmdShow)
+//int APIENTRY wWinMain(HINSTANCE hInst, HINSTANCE hPrev, LPWSTR lpCmdLine, int nCmdShow)
+int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hPrev, LPSTR lpCmdLine, int nCmdShow)
 {
 #ifdef _DEBUG
 	char *a = new char[1];

@@ -1,4 +1,4 @@
-BIN     = ckw.exe
+BIN     = metacryst.exe
 RES     = rsrc.res
 RM      = rm
 OBJ     = main.o \
@@ -29,11 +29,12 @@ CFLAGS  = -Os -Wall \
           -fno-rtti \
           -fno-exceptions \
           -fomit-frame-pointer \
-          -fmove-all-movables \
           -c $(DEFINES)
-LFLAGS  =
-LOPTS   = -Wl,--entry,_wWinMain,--enable-stdcall-fixup
-LIBS    = -s -mwindows -nostartfiles
+LFLAGS  = 
+#LOPTS   = -Wl,--entry,_wWinMain,--enable-stdcall-fixup
+#LIBS    = -s -mwindows -nostartfiles
+LOPTS   = 
+LIBS    = -s -mwindows -lshlwapi
 
 
 # --------------------------------------------------------------------

@@ -22,6 +22,27 @@
 #include "version.h"
 #include <shlwapi.h>
 
+#include <stdio.h>
+
+#define	sprintf_s(buffer, buffer_size, stringbuffer, ...) (snprintf(buffer, buffer_size, stringbuffer, __VA_ARGS__))
+#define sscanf_s(buffer, stringbuffer, ...) (sscanf(buffer, stringbuffer, __VA_ARGS__))
+#define strcpy_s(d, s) (strcpy(d, s))
+#define strcat_s(d, s) (strcat(d, s))
+
+void _splitpath_s(const char *path, char *drive, char *dir, char *fname, char *ext)
+{
+    *drive = 0;
+    *dir = 0;
+    *fname = 0;
+    *ext = 0;
+}
+
+void _makepath_s(char *path, const char *szDrive, 
+		 const char *szDir, const char *cfgfile, const char *ext)
+{
+    *path = 0;
+}
+
 static bool lookupColor(const char *str, COLORREF& ret)
 {
 	typedef struct {
@@ -773,7 +794,7 @@ static bool lookupColor(const char *str, COLORREF& ret)
 		char	format[256];
 		int	span = (int)(strlen(str)-1) / 3;
 		int	r, g, b;
-		sprintf_s(format, "%%%dx%%%dx%%%dx", span, span, span);
+		sprintf_s(format, 256, "%%%dx%%%dx%%%dx", span, span, span);
 		if(sscanf_s(str+1, format, &r, &g, &b) == 3) {
 			if(span < 2) {
 				r <<= 4;
@@ -1113,7 +1134,11 @@ void	ckOpt::_loadXdefaults(const char *path)
 	FILE	*fp;
 	std::string app, name, value;
 
+#if 0
 	fopen_s(&fp, path, "r");
+#else
+	fp = fopen(path, "r");
+#endif
 	if(!fp) return;
 
 	do {
